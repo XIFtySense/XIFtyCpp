@@ -28,12 +28,33 @@ ctest --test-dir build --output-on-failure
 
 If your core checkout lives elsewhere, set `XIFTY_CORE_DIR` before configuring.
 
+For projects using CMake directly, a minimal `FetchContent` setup looks like:
+
+```cmake
+include(FetchContent)
+
+FetchContent_Declare(
+  XIFtyCpp
+  GIT_REPOSITORY https://github.com/XIFtySense/XIFtyCpp.git
+  GIT_TAG main
+)
+
+FetchContent_MakeAvailable(XIFtyCpp)
+target_link_libraries(your_target PRIVATE xifty_cpp)
+```
+
 ## Status
 
 - source-first and usable today
 - built on the stable `xifty-ffi` ABI
 - CI validates the wrapper against the public XIFty core repo on every push
 - structured for future packaging and binary-distribution work
+
+## Release Model
+
+- source-first today, intended to be consumed from tagged releases
+- the public API lives in `include/xifty_cpp/xifty.hpp`
+- future binary packaging should build on the same stable `xifty-ffi` seam
 
 ## License
 
