@@ -55,9 +55,14 @@ ctest --test-dir build --output-on-failure
 
 You can still override the core location explicitly with `XIFTY_CORE_DIR`.
 
+This binding remains intentionally source-first for now. It is not yet on the
+canonical runtime-artifact packaging path used by the newer Python and Rust
+package hardening work.
+
 ## Status
 
 - source-first and usable today
+- not yet on the canonical runtime-artifact packaging path
 - built on the stable `xifty-ffi` ABI
 - CI validates the wrapper against the public XIFty core repo
 
