@@ -1,21 +1,40 @@
 # XIFtyCpp
 
-C++ package for XIFty.
+C++ binding for [XIFty](https://github.com/XIFtySense/XIFty).
 
-This package currently links against the XIFty core repository through the
-stable `xifty-ffi` C ABI. Local development expects a sibling checkout of the
-core repo at:
+`XIFtyCpp` is a light C++ facade over the stable `xifty-ffi` C ABI. It is ready
+for source-based use today and is intended to become the canonical C++ package
+for XIFty consumers.
 
-- `../XIFty`
+## What You Get
 
-You can override that path with `XIFTY_CORE_DIR`.
+- `xifty::version()`
+- `xifty::probe_json(path)`
+- `xifty::extract_json(path, view)`
+- an exception-based C++ layer that stays intentionally thin over the core ABI
 
-## Local Development
+## Quickstart
+
+Clone the public core repo as a sibling checkout, then configure and run the
+wrapper:
 
 ```bash
+git clone git@github.com:XIFtySense/XIFty.git ../XIFty
 cmake -S . -B build
 cmake --build build
 ctest --test-dir build --output-on-failure
 ./build/xifty_cpp_example
 ```
 
+If your core checkout lives elsewhere, set `XIFTY_CORE_DIR` before configuring.
+
+## Status
+
+- source-first and usable today
+- built on the stable `xifty-ffi` ABI
+- CI validates the wrapper against the public XIFty core repo on every push
+- structured for future packaging and binary-distribution work
+
+## License
+
+MIT

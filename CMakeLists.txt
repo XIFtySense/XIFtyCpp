@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(XIFtyCpp LANGUAGES CXX)
+project(XIFtyCpp VERSION 0.1.0 DESCRIPTION "C++ binding for XIFty" LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -9,6 +9,8 @@ if(DEFINED ENV{XIFTY_CORE_DIR})
 else()
   set(XIFTY_CORE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../XIFty")
 endif()
+
+message(STATUS "Using XIFty core from ${XIFTY_CORE_DIR}")
 
 execute_process(
   COMMAND cargo build -p xifty-ffi --manifest-path ${XIFTY_CORE_DIR}/Cargo.toml
@@ -20,6 +22,7 @@ if(NOT XIFTY_CORE_BUILD_RESULT EQUAL 0)
 endif()
 
 add_library(xifty_cpp src/xifty.cpp)
+add_library(XIFty::xifty_cpp ALIAS xifty_cpp)
 target_include_directories(xifty_cpp PUBLIC include)
 target_include_directories(xifty_cpp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(xifty_cpp PRIVATE ${XIFTY_CORE_DIR}/target/debug/libxifty_ffi.a)
