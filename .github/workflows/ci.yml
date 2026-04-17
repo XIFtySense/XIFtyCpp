@@ -24,19 +24,11 @@ jobs:
     defaults:
       run:
         working-directory: ${{ github.workspace }}/XIFtyCpp
-    env:
-      XIFTY_CORE_DIR: ${{ github.workspace }}/XIFty
     steps:
       - name: Check out binding repo
         uses: actions/checkout@v5
         with:
           path: XIFtyCpp
-
-      - name: Check out core repo
-        uses: actions/checkout@v5
-        with:
-          repository: XIFtySense/XIFty
-          path: XIFty
 
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
@@ -45,7 +37,7 @@ jobs:
         uses: Swatinem/rust-cache@v2
         with:
           workspaces: |
-            XIFty -> target
+            XIFtyCpp/.xifty-core -> target
 
       - name: Configure
         run: cmake -S . -B build
@@ -56,5 +48,7 @@ jobs:
       - name: Run tests
         run: ctest --test-dir build --output-on-failure
 
-      - name: Run example
-        run: ./build/xifty_cpp_example
+      - name: Run examples
+        run: |
+          ./build/xifty_cpp_example
+          ./build/xifty_cpp_gallery_example

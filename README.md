@@ -1,60 +1,65 @@
-# XIFtyCpp
+# XIFty for C++
 
-C++ binding for [XIFty](https://github.com/XIFtySense/XIFty).
+`XIFtyCpp` is the official C++ binding repo for XIFty.
 
-`XIFtyCpp` is a light C++ facade over the stable `xifty-ffi` C ABI. It is ready
-for source-based use today and is intended to become the canonical C++ package
-for XIFty consumers.
+It provides a thin C++ facade over the stable `xifty-ffi` ABI so C++ programs
+can probe files and extract metadata views without binding directly to the raw C
+layer.
 
-## What You Get
+## What It Does
+
+XIFty exposes four complementary metadata views:
+
+- `raw`
+- `interpreted`
+- `normalized`
+- `report`
+
+This binding keeps that contract intact and adds a small exception-based C++
+surface.
+
+## Quick Example
+
+```cpp
+const auto normalized = xifty::extract_json("photo.jpg", xifty::ViewMode::Normalized);
+std::cout << normalized << "\n";
+```
+
+## API
 
 - `xifty::version()`
 - `xifty::probe_json(path)`
 - `xifty::extract_json(path, view)`
-- an exception-based C++ layer that stays intentionally thin over the core ABI
 
-## Quickstart
+## Why Use It
 
-Clone the public core repo as a sibling checkout, then configure and run the
-wrapper:
+Use this binding when you want:
+
+- native C++ access to XIFty
+- stable normalized metadata for application logic
+- raw and interpreted metadata when provenance matters
+- a minimal C++ facade over the stable ABI
+
+## Local Setup
+
+This repo no longer assumes a sibling `../XIFty` checkout. By default, CMake
+uses a repo-local `.xifty-core` cache and refreshes it during configure.
 
 ```bash
-git clone git@github.com:XIFtySense/XIFty.git ../XIFty
 cmake -S . -B build
 cmake --build build
 ctest --test-dir build --output-on-failure
 ./build/xifty_cpp_example
+./build/xifty_cpp_gallery_example
 ```
 
-If your core checkout lives elsewhere, set `XIFTY_CORE_DIR` before configuring.
-
-For projects using CMake directly, a minimal `FetchContent` setup looks like:
-
-```cmake
-include(FetchContent)
-
-FetchContent_Declare(
-  XIFtyCpp
-  GIT_REPOSITORY https://github.com/XIFtySense/XIFtyCpp.git
-  GIT_TAG main
-)
-
-FetchContent_MakeAvailable(XIFtyCpp)
-target_link_libraries(your_target PRIVATE xifty_cpp)
-```
+You can still override the core location explicitly with `XIFTY_CORE_DIR`.
 
 ## Status
 
 - source-first and usable today
 - built on the stable `xifty-ffi` ABI
-- CI validates the wrapper against the public XIFty core repo on every push
-- structured for future packaging and binary-distribution work
-
-## Release Model
-
-- source-first today, intended to be consumed from tagged releases
-- the public API lives in `include/xifty_cpp/xifty.hpp`
-- future binary packaging should build on the same stable `xifty-ffi` seam
+- CI validates the wrapper against the public XIFty core repo
 
 ## License
 
