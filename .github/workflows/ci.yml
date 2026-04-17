@@ -33,12 +33,6 @@ jobs:
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Cache Rust artifacts
-        uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: |
-            XIFtyCpp/.xifty-core -> target
-
       - name: Configure
         run: cmake -S . -B build
 

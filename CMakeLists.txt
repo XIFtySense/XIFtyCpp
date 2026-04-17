@@ -12,6 +12,10 @@ endif()
 
 message(STATUS "Using XIFty core from ${XIFTY_CORE_DIR}")
 
+if(EXISTS "${XIFTY_CORE_DIR}" AND NOT EXISTS "${XIFTY_CORE_DIR}/.git")
+  file(REMOVE_RECURSE "${XIFTY_CORE_DIR}")
+endif()
+
 if(NOT EXISTS "${XIFTY_CORE_DIR}/.git")
   execute_process(
     COMMAND git clone --depth 1 --branch main https://github.com/XIFtySense/XIFty.git ${XIFTY_CORE_DIR}
